@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
 import { FlightEditComponent, FlightSearchComponent } from './feature-flight';
-import { FlightResolver } from './logic-flight';
+import { FlightResolver, provideFlight } from './logic-flight';
 
 const BOOKING_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
       import('./feature-flight/flight-booking/flight-booking.component'),
+    providers: [provideFlight()],
     children: [
       {
         path: '',
