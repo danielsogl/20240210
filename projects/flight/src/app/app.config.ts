@@ -6,6 +6,7 @@ import {
   withComponentInputBinding,
   withDebugTracing,
   withPreloading,
+  withViewTransitions,
 } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
@@ -18,7 +19,8 @@ export const appConfig: ApplicationConfig = {
       APP_ROUTES,
       withComponentInputBinding(),
       withPreloading(PreloadAllModules),
-      withDebugTracing()
+      withDebugTracing(),
+      withViewTransitions()
     ),
     provideHttpClient(),
     provideStore(),
