@@ -5,14 +5,12 @@ import { HomeComponent } from './feature-core';
 
 
 @NgModule({
-  declarations: [
-    HomeComponent
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    HomeComponent
-  ]
+    imports: [
+        CommonModule,
+        HomeComponent
+    ],
+    exports: [
+        HomeComponent
+    ]
 })
 export class SharedModule { }

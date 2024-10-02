@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
-import { NonNullableFormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { distinctUntilChanged, map, switchMap } from 'rxjs';
 import { PassengerService } from '../../logic-passenger';
 import { validatePassengerStatus } from '../../util-validation';
+import { NgIf } from '@angular/common';
 
 
 @Component({
-  selector: 'app-passenger-edit',
-  templateUrl: './passenger-edit.component.html'
+    selector: 'app-passenger-edit',
+    templateUrl: './passenger-edit.component.html',
+    standalone: true,
+    imports: [ReactiveFormsModule, NgIf]
 })
 export class PassengerEditComponent {
   protected editForm = this.formBuilder.group({

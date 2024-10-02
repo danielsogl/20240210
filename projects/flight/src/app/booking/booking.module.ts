@@ -17,21 +17,19 @@ import { FlightCardComponent, FlightFilterComponent } from './ui-flight';
 import { FlightPipe } from './ui-flight/flight-pipe/flight.pipe';
 
 @NgModule({
-  declarations: [
-    FlightBookingComponent,
-    FlightEditComponent,
-    FlightSearchComponent,
-  ],
-  imports: [
-    CommonModule,
-    BookingRoutingModule,
-    ReactiveFormsModule,
-    StoreModule.forFeature(ticketFeature),
-    EffectsModule.forFeature([TicketEffects]),
-    // UiFlightModule,
-    FlightCardComponent,
-    FlightFilterComponent,
-    FlightPipe,
-  ],
+    imports: [
+        CommonModule,
+        BookingRoutingModule,
+        ReactiveFormsModule,
+        StoreModule.forFeature(ticketFeature),
+        EffectsModule.forFeature([TicketEffects]),
+        // UiFlightModule,
+        FlightCardComponent,
+        FlightFilterComponent,
+        FlightPipe,
+        FlightBookingComponent,
+        FlightEditComponent,
+        FlightSearchComponent,
+    ],
 })
 export class BookingModule {}

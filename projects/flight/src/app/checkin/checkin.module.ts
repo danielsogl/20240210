@@ -6,15 +6,13 @@ import { PassengerEditComponent, PassengerSearchComponent } from './feature-pass
 
 
 @NgModule({
-  declarations: [
-    PassengerEditComponent,
-    PassengerSearchComponent
-  ],
-  imports: [
-    CommonModule,
-    CheckinRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        CheckinRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        PassengerEditComponent,
+        PassengerSearchComponent
+    ]
 })
 export class CheckinModule { }
