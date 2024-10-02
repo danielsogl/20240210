@@ -1,34 +1,46 @@
 <ng-container *ngIf="flights$ | async as flights">
+  <p>{{ searchString() }}</p>
+
+  <p>{{ searchValue() | json }}</p>
 
   <div class="card">
     <div class="card-header">
       <h2 class="card-title">Flight Search</h2>
     </div>
 
-    <div class="card-body">
+    <div class="form-group">
+      <label for="from">From:</label>
+      <input id="from" class="form-control" [(ngModel)]="fromValue" />
+    </div>
 
-      <app-flight-filter
-        [filter]="filter"
-        (searchTrigger)="search($event)"
-        >
+    <div class="form-group">
+      <label for="to">To:</label>
+      <input id="to" class="form-control" [(ngModel)]="toValue" />
+    </div>
+
+    <div class="card-body">
+      <app-flight-filter [filter]="filter()" (searchTrigger)="search($event)">
         <div *ngIf="flights.length" class="flight-filter-info">
           {{ flights.length }} flights found!
         </div>
-        <button *ngIf="flights.length" (click)="reset()"
+        <button
+          *ngIf="flights.length"
+          (click)="reset()"
           class="btn btn-default flight-filter-button"
-        >Reset</button>
+        >
+          Reset
+        </button>
       </app-flight-filter>
-
     </div>
   </div>
 
   <div class="row">
     <div *ngFor="let flight of flights" class="col-xs-12 col-sm-6 col-md-4">
       <app-flight-card
-      [item]="flight"
-      [(selected)]="basket[flight.id]"
-      (delayTrigger)="delay($event)"
-    />
+        [item]="flight"
+        (delayTrigger)="delay($event)"
+        [(selected)]="basket()[flight.id]"
+      />
     </div>
   </div>
 
@@ -41,5 +53,4 @@
       <pre>{{ basket | json }}</pre>
     </div>
   </div>
-
 </ng-container>

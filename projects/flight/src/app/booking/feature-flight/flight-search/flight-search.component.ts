@@ -1,9 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, JsonPipe } from '@angular/common';
+import {
+  Component,
+  computed,
+  effect,
+  EnvironmentInjector,
+  inject,
+  signal,
+  untracked,
+  WritableSignal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Flight, FlightFilter, injectTicketsFacade } from '../../logic-flight';
 import { FlightCardComponent, FlightFilterComponent } from '../../ui-flight';
-
 
 @Component({
   standalone: true,
@@ -11,33 +19,71 @@ import { FlightCardComponent, FlightFilterComponent } from '../../ui-flight';
     CommonModule,
     FormsModule,
     FlightCardComponent,
-    FlightFilterComponent
+    FlightFilterComponent,
+    JsonPipe,
   ],
   selector: 'app-flight-search',
   templateUrl: './flight-search.component.html',
 })
 export class FlightSearchComponent {
   private ticketsFacade = injectTicketsFacade();
+  private readonly injector = inject(EnvironmentInjector);
 
-  protected filter = {
+  protected readonly fromValue = signal('London');
+  protected readonly toValue = signal('San Francisco');
+
+  searchValue = computed(() => {
+    return {
+      from: this.fromValue(),
+      to: this.toValue(),
+    };
+  });
+
+  protected filter = signal({
     from: 'London',
     to: 'San Francisco',
-    urgent: false
-  };
-  protected basket: Record<number, boolean> = {
+    urgent: false,
+  });
+
+  protected basket: WritableSignal<Record<number, boolean>> = signal({
     3: true,
-    5: true
-  };
+    5: true,
+  });
+
+  protected searchString = computed(() => {
+    const { from, to } = this.filter();
+    return `Flight from ${from} to ${to}`;
+  });
+
+  fromString = computed(() => this.filter().from);
+  toString = computed(() => this.filter().to);
+
   protected flights$ = this.ticketsFacade.flights$;
 
-  protected search(filter: FlightFilter): void {
-    this.filter = filter;
+  // searchStringLogger = effect(() => {});
 
-    if (!this.filter.from || !this.filter.to) {
+  constructor() {
+    effect(() => {
+      console.log(
+        'Search string changed:',
+        this.fromString(),
+        untracked(() => this.toString())
+      );
+    });
+  }
+
+  protected search(filter: FlightFilter): void {
+    this.filter.set(filter);
+
+    if (!this.filter().from || !this.filter().to) {
       return;
     }
 
-    this.ticketsFacade.search(this.filter);
+    this.ticketsFacade.search(this.filter());
+
+    effect(() => console.log('Search:', this.filter()), {
+      injector: this.injector,
+    });
   }
 
   protected delay(flight: Flight): void {
@@ -48,7 +94,7 @@ export class FlightSearchComponent {
     const newFlight = {
       ...oldFlight,
       date: newDate.toISOString(),
-      delayed: true
+      delayed: true,
     };
 
     this.ticketsFacade.update(newFlight);

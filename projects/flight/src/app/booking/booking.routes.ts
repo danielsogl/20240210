@@ -1,25 +1,24 @@
-import { Routes } from "@angular/router";
-import { provideEffects } from "@ngrx/effects";
-import { provideState } from "@ngrx/store";
-import { TicketEffects } from "./logic-flight/+state/effects";
-import { ticketFeature } from "./logic-flight/+state/reducer";
-import { FlightSearchComponent, FlightEditComponent, FlightBookingComponent } from "./feature-flight";
-import { flightsResolverConfig } from "./logic-flight/data-access/flight.resolver";
-
+import { Routes } from '@angular/router';
+import { provideEffects } from '@ngrx/effects';
+import { provideState } from '@ngrx/store';
+import {
+  FlightBookingComponent,
+  FlightEditComponent,
+  FlightSearchComponent,
+} from './feature-flight';
+import { TicketEffects } from './logic-flight/+state/effects';
+import { ticketFeature } from './logic-flight/+state/reducer';
 
 export const BOOKING_ROUTES: Routes = [
   {
     path: '',
     component: FlightBookingComponent,
-    providers: [
-      provideState(ticketFeature),
-      provideEffects([TicketEffects]),
-    ],
+    providers: [provideState(ticketFeature), provideEffects([TicketEffects])],
     children: [
       {
         path: '',
         redirectTo: 'flight',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'flight',
@@ -27,7 +26,7 @@ export const BOOKING_ROUTES: Routes = [
           {
             path: '',
             redirectTo: 'search',
-            pathMatch: 'full'
+            pathMatch: 'full',
           },
           {
             path: 'search',
@@ -36,12 +35,12 @@ export const BOOKING_ROUTES: Routes = [
           {
             path: 'edit/:id',
             component: FlightEditComponent,
-            resolve: flightsResolverConfig
-          }
-        ]
-      }
-    ]
-  }
+            // resolve: flightsResolverConfig
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export default BOOKING_ROUTES;
