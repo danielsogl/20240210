@@ -1,15 +1,20 @@
 import {
   Component,
-  OnChanges,
-  SimpleChanges,
+  DestroyRef,
+  OnInit,
   effect,
   inject,
   input,
   numberAttribute,
+  signal,
 } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { switchMap } from 'rxjs';
+import { interval, switchMap } from 'rxjs';
 import { FlightService } from '../../api-boarding';
 import { initialFlight } from '../../logic-flight';
 
@@ -19,9 +24,11 @@ import { initialFlight } from '../../logic-flight';
   imports: [ReactiveFormsModule],
   templateUrl: './flight-edit.component.html',
 })
-export class FlightEditComponent implements OnChanges {
-  // private readonly activatedRoute = inject(ActivatedRoute);
+export class FlightEditComponent implements OnInit {
   private readonly flightService = inject(FlightService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  protected readonly counter = signal(0);
 
   readonly flightId = input.required({
     alias: 'id',
@@ -37,16 +44,6 @@ export class FlightEditComponent implements OnChanges {
     }
   );
 
-  // protected readonly flight$ = this.activatedRoute.paramMap.pipe(
-  //   filter((params) => params.has('id')),
-  //   map((params) => +params.get('id')!),
-  //   switchMap((id) => this.flightService.findById(id))
-  // );
-
-  // private store = inject(Store);
-
-  // @Input() flight = initialFlight;
-
   protected editForm = inject(NonNullableFormBuilder).group({
     id: [0],
     from: [''],
@@ -55,21 +52,25 @@ export class FlightEditComponent implements OnChanges {
     delayed: [false],
   });
 
-  constructor() {
-    // this.store
-    //   .select(routerFeature.selectRouteParams)
-    //   .subscribe((params) => console.log(params));
+  valueChanges = toSignal(this.editForm.valueChanges);
+  statusChanges = toSignal(this.editForm.statusChanges);
 
+  constructor() {
     effect(() => {
       const flight = this.flight();
       this.editForm.patchValue(flight);
     });
+
+    effect(() => console.log(this.counter()));
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // if (changes['flight'].previousValue !== changes['flight'].currentValue) {
-    //   this.editForm.patchValue(this.flight);
-    // }
+  ngOnInit(): void {
+    interval(1000)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((value) => {
+        console.log(value);
+        this.counter.set(value);
+      });
   }
 
   protected save(): void {
