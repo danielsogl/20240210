@@ -1,20 +1,24 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { BookingRoutingModule } from './booking-routing.module';
+import {
+  FlightBookingComponent,
+  FlightEditComponent,
+  FlightSearchComponent,
+} from './feature-flight';
 import { TicketEffects } from './logic-flight/+state/effects';
 import { ticketFeature } from './logic-flight/+state/reducer';
-import { FlightBookingComponent, FlightEditComponent, FlightSearchComponent } from './feature-flight';
-import { ReactiveFormsModule } from '@angular/forms';
-import { UiFlightModule } from './ui-flight/ui-flight.module';
-
+import { FlightCardComponent, FlightFilterComponent } from './ui-flight';
+import { FlightPipe } from './ui-flight/flight-pipe/flight.pipe';
 
 @NgModule({
   declarations: [
     FlightBookingComponent,
     FlightEditComponent,
-    FlightSearchComponent
+    FlightSearchComponent,
   ],
   imports: [
     CommonModule,
@@ -22,7 +26,10 @@ import { UiFlightModule } from './ui-flight/ui-flight.module';
     ReactiveFormsModule,
     StoreModule.forFeature(ticketFeature),
     EffectsModule.forFeature([TicketEffects]),
-    UiFlightModule
-  ]
+    // UiFlightModule,
+    FlightCardComponent,
+    FlightFilterComponent,
+    FlightPipe,
+  ],
 })
-export class BookingModule { }
+export class BookingModule {}

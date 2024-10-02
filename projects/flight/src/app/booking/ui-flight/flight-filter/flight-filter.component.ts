@@ -1,11 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, NonNullableFormBuilder, Validators } from '@angular/forms';
+import {
+  FormControl,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { FlightFilter } from '../../logic-flight';
-
+import { FlightPipe } from '../flight-pipe/flight.pipe';
 
 @Component({
   selector: 'app-flight-filter',
-  templateUrl: './flight-filter.component.html'
+  templateUrl: './flight-filter.component.html',
+  standalone: true,
+  imports: [ReactiveFormsModule, FlightPipe],
 })
 export class FlightFilterComponent {
   @Input() set filter(filter: FlightFilter) {
@@ -20,9 +27,12 @@ export class FlightFilterComponent {
     urgent: [false],
   });
 
-  protected selectedFilterControl = new FormControl(this.inputFilterForm.getRawValue(), {
-    nonNullable: true,
-  });
+  protected selectedFilterControl = new FormControl(
+    this.inputFilterForm.getRawValue(),
+    {
+      nonNullable: true,
+    }
+  );
 
   constructor(private formBuilder: NonNullableFormBuilder) {}
 
