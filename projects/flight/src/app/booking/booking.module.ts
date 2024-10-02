@@ -11,7 +11,9 @@ import {
 } from './feature-flight';
 import { TicketEffects } from './logic-flight/+state/effects';
 import { ticketFeature } from './logic-flight/+state/reducer';
+
 import { FlightCardComponent, FlightFilterComponent } from './ui-flight';
+
 import { FlightPipe } from './ui-flight/flight-pipe/flight.pipe';
 
 @NgModule({
