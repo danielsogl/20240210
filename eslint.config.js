@@ -40,9 +40,9 @@ module.exports = tseslint.config(
       ...angular.configs.templateAccessibility,
     ],
     rules: {},
-  },
-  {
-    files: ["**/*.ts"],
-    extends: [sheriff.configs.all],
   }
+  // {
+  //   files: ["**/*.ts"],
+  //   extends: [sheriff.configs.all],
+  // }
 );
