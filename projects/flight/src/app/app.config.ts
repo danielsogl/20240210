@@ -12,7 +12,7 @@ import {
 } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
-import { APP_ROUTES } from './app-routing.module';
+import { APP_ROUTES } from './app.routes';
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
 import { routerFeature } from './shared/logic-router-state';
 import { provideConfigState } from './shared/util-config';
